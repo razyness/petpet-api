@@ -8,7 +8,7 @@ from starlette.responses import StreamingResponse
 
 app = FastAPI()
 
-@app.get("/petpet/")
+@app.get("/petpet")
 async def pet(image: str = Query(..., description="URL of the image to petpet")):
     try:
         response = requests.get(image)
