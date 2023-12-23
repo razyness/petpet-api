@@ -8,6 +8,7 @@ A FastAPI app that makes silly petpet gifs
    ```
 ## Usage
 1. RUN `uvicorn main:app --reload`
-2. GET `ip://petpet?image={image url}`
+2. GET `/petpet?image={image url}`
 
-Returns the gif's bytes
+Returns the gif's bytes.
+You may also check `/redoc`
