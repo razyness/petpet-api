@@ -8,8 +8,8 @@ from starlette.responses import StreamingResponse
 
 app = FastAPI()
 
-@app.get("/petpet")
-async def pet(image: str = Query(..., description="URL of the image to petpet")):
+
+async def make_gif(image):
     try:
         response = requests.get(image)
         response.raise_for_status()
@@ -22,11 +22,16 @@ async def pet(image: str = Query(..., description="URL of the image to petpet"))
         dest = BytesIO()
         petpet.make(temp_file.name, dest)
         dest.seek(0)
+        return dest
 
-        return StreamingResponse(dest, media_type="image/gif")
-    
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    
     finally:
         temp_file.close()
+
+
+@app.get("/petpet")
+async def pet(image: str = Query(..., description="URL of the image to petpet")):
+    try:
+        dest = await make_gif(image)
+        return StreamingResponse(dest, media_type="image/gif")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
